@@ -3,7 +3,8 @@ var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 
 var Storage = function() {
-    this.users = [];
+    /*this.users = [];
+    this.userId = 0;*/
     this.items = [];
     this.id = 0;
 };
@@ -50,10 +51,10 @@ Storage.prototype.update = function(updateItem) {
     return success;
 };
 
-Storage.prototype.addUser = function(name) {
+/*Storage.prototype.addUser = function(name) {
   var user = {name: name, items: [], id: this.id};
-  storage.users.push(user);
-  this.id += 1;
+  this.users.push(user);
+  this.userId += 1;
   return user;
 };
 
@@ -71,15 +72,15 @@ Storage.prototype.deleteUser = function(userId) {
     return true;
   });
   return success;
-};
+};*/
 
 var storage = new Storage();
 storage.add('Broad beans');
 storage.add('Tomatoes');
 storage.add('Peppers');
-storage.addUser('Joe');
+/*storage.addUser('Joe');
 console.log(storage.deleteUser(3));
-
+console.log(storage.deleteUser(1));*/
 var app = express();
 app.use(express.static('public'));
 
@@ -88,7 +89,8 @@ app.get('/items', function(req, res) {
 });
 
 app.post('/items', jsonParser, function(req, res) {
-    if (!req.body) {
+    console.log(req.body, "----------------------");
+    if (!req.body.name) {
         return res.sendStatus(400);
     }
 
@@ -117,3 +119,6 @@ console.log(" ");
 console.log(" ");
 
 app.listen(process.env.PORT || 8080);
+
+exports.app = app;
+exports.storage = storage;
